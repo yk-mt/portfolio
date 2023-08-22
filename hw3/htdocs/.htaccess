@@ -1,0 +1,17 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  RewriteCond %{HTTP_HOST} ^www.example.com
+  RewriteRule ^(.*)$ http://example.com/$1 [R=301,L,NE]
+
+  RewriteCond %{REQUEST_URI} ![&]
+  RewriteCond %{REQUEST_URI} !/$
+  RewriteCond %{REQUEST_URI} !\.[^/\.]+$
+  RewriteRule .* %{REQUEST_URI}/ [L,R]
+
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule (.*) index.php/?%{QUERY_STRING}&request=$1 [L]
+
+  RewriteCond %{THE_REQUEST} ^GET\ !-f
+  RewriteRule ^(.*)index.php/?(.*)$ http://example.com/$1$2 [R=301,L,NE]
+</IfModule>
